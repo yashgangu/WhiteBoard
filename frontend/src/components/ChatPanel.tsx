@@ -21,12 +21,7 @@ export default function ChatPanel({ socket }: any) {
   const send = () => {
     if (!text.trim()) return;
 
-    const msg = {
-      user: username, 
-      text,
-    };
-
-    socket.emit("chat:message", msg);
+    socket.emit("chat:message", { user: username, text });
     setText("");
   };
 
@@ -34,23 +29,31 @@ export default function ChatPanel({ socket }: any) {
     <div>
       <h5 className="mb-3">Live Chat</h5>
 
-      <div className="chat-container">
+      {/* Chat Messages */}
+      <div
+        className="border rounded p-3 mb-3 overflow-auto"
+        style={{ height: "500px" }}
+      >
         {messages.map((m, i) => (
-          <div key={i} className="chat-message">
+          <div
+            key={i}
+            className="bg-light rounded px-3 py-2 mb-2"
+          >
             <strong>{m.user}: </strong>
             {m.text}
           </div>
         ))}
       </div>
 
-      <div className="chat-input-box">
+      {/* Input */}
+      <div className="d-flex gap-2">
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
           className="form-control"
           placeholder="Type message..."
         />
-        <button className="btn btn-primary ms-2" onClick={send}>
+        <button className="btn btn-primary" onClick={send}>
           Send
         </button>
       </div>
